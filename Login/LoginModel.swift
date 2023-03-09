@@ -8,7 +8,7 @@ import Foundation
 
 struct DataResponse<T:Codable>: Codable {
     let message:String?
-    var succes: Bool?
+    var succes: CodeResponse?
     var data: T?
 
 }

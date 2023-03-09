@@ -123,8 +123,9 @@ class API {
 }
 
 //Enumeración de los códigos de respuesta desde el WS
-enum CodeResponse: Int{
+enum CodeResponse: Int, Codable{
     case success = 200
+    case server_error = 404
     case noContent = 204
     case bad_request = 400
     case authorization = 401

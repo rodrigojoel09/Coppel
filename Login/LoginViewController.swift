@@ -11,6 +11,7 @@ import UIKit
 final class LoginViewController: UIViewController, UITextFieldDelegate {
     
     var viewModel = LoginViewModel()
+    var modelSession = ProfileViewModel()
     
     var movieDataToken: MovieDataResponse?
     
@@ -109,6 +110,7 @@ final class LoginViewController: UIViewController, UITextFieldDelegate {
                 navVC.modalPresentationStyle = .fullScreen
                 self?.present(navVC, animated: true)
                
+                self?.modelSession.createSession()
                 
             }else {
                 self?.errorLabel.isHidden = false
@@ -137,7 +139,7 @@ final class LoginViewController: UIViewController, UITextFieldDelegate {
     }
         
     private func configureConstraints() {
-        imageExample.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 100).isActive = true
+        imageExample.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 60).isActive = true
         imageExample.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         
         containerStackView.topAnchor.constraint(equalTo: imageExample.bottomAnchor, constant: 60).isActive = true

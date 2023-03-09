@@ -16,14 +16,6 @@ struct TestCollection {
 class ListMoviesViewController: UIViewController {
     
     let items = ["Popular", "Top Rated", "On TV", "Airing Today"]
-    let testColl = [TestCollection(title: "Ejemplo 1", image: ""),
-                    TestCollection(title: "Ejemplo 2", image: ""),
-                    TestCollection(title: "Ejemplo 3", image: ""),
-                    TestCollection(title: "Ejemplo 4", image: ""),
-                    TestCollection(title: "Ejemplo 5", image: ""),
-                    TestCollection(title: "Ejemplo 6", image: ""),
-                    TestCollection(title: "Ejemplo 7", image: ""),
-                    TestCollection(title: "Ejemplo 8", image: "")]
     
     private var pathToDetail = 1
     var finalPath = ""
@@ -43,9 +35,9 @@ class ListMoviesViewController: UIViewController {
         layout.scrollDirection = .vertical
         let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
         //layout.itemSize = CGSize(width: (collection.frame.width - layout.minimumInteritemSpacing) / 2, height: 300)
-        layout.itemSize = .init(width: 180, height: 540)
+        layout.itemSize = .init(width: 160, height: 540)
         //layout.minimumLineSpacing = 10
-        layout.minimumInteritemSpacing = 10
+        layout.minimumInteritemSpacing = 2
         
         
         collection.translatesAutoresizingMaskIntoConstraints = false
@@ -64,13 +56,14 @@ class ListMoviesViewController: UIViewController {
        
         
         let segmentedControl = UISegmentedControl(items: items)
-        segmentedControl.frame = CGRect(x: 20, y: 100, width: view.frame.width - 40, height: 30)
+        segmentedControl.frame = CGRect(x: 15, y: 95, width: view.frame.width - 40, height: 30)
         segmentedControl.selectedSegmentIndex = 0
         segmentedControl.tintColor = .red
         segmentedControl.addTarget(self, action: #selector(didChangeSegmentedControl), for: .valueChanged)
         
         collectionMovies.backgroundColor = .white
         collectionMovies.dataSource = self
+        collectionMovies.delegate = self
         collectionMovies.register(CustomCellMovie.self, forCellWithReuseIdentifier: "CustomCellMovie")
         
         [segmentedControl, collectionMovies].forEach(view.addSubview)
@@ -125,8 +118,6 @@ class ListMoviesViewController: UIViewController {
     }
     
     @objc func showProfile() {
-      
-        
         let vc = ProfileViewController()
                 navigationController?.pushViewController(vc, animated: true)
     }
@@ -161,11 +152,31 @@ extension ListMoviesViewController: UICollectionViewDataSource {
         cell.backgroundColor = .white
         
         let model = movies.results[indexPath.row]
-        
+ 
         cell.moviesList = model
-        
         return cell
     }
     
     
+}
+
+extension ListMoviesViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let vc = DetailMovieViewController()
+        
+        let model = movies.results[indexPath.row]
+        switch pathToDetail {
+       
+        case 1:
+            finalPath = Constants.detailMovie(tv_id: model.id)
+           
+        case 2:
+            finalPath = Constants.detailTv(movie_id: model.id)
+        default:
+            print("Failure path context")
+        }
+        
+        vc.urlFinal = finalPath
+                navigationController?.pushViewController(vc, animated: true)
+    }
 }

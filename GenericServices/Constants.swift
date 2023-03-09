@@ -30,6 +30,15 @@ class Constants: NSObject {
     
     static let baseImages = "https://image.tmdb.org/t/p/w200"
     
+    static let createSessionPath = "https://api.themoviedb.org/3/authentication/session/new?api_key=\(APIKey)"
+    
+    static let deleteSession = "https://api.themoviedb.org/3/authentication/session?api_key=\(APIKey)"
+    
+    /* static func accountPath(idSession: String) -> String {
+     "https://api.themoviedb.org/3/account?api_key=\(APIKey)&session_id=\(idSession)"
+ }*/
+    static let accountPath = "https://api.themoviedb.org/3/account?api_key=\(APIKey)&session_id=\(ProfileInfo.shared.session ?? "else value")"
+    
     static func pathImage(path: String)-> String {
         return "\(baseImages)\(path)"
     }

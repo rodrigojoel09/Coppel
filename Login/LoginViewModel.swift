@@ -18,6 +18,9 @@ class LoginViewModel {
     init() {
     }
     
+    
+    var movieDataToken: MovieDataResponse?
+    
     //Función que hace el request a la Api, para logear
     func makeLogin(userName: String, password: String){
         let parameters = LoginRequets(username: userName, password: password, request_token: ProfileInfo.shared.token)
@@ -27,7 +30,7 @@ class LoginViewModel {
             
             self?.statusCode.value = statusCode
             
-            guard let res = response?.request_token else{
+            guard let res = response else{
                 return
             }
             
@@ -41,18 +44,16 @@ class LoginViewModel {
     
     func getToken() {
         if let url = URL(string: Constants.tokenBase){
-            
-            URLSession.shared.dataTask(with: url) { data, response, error in
-                if let data = data {
-                    let decoder = JSONDecoder()
-                    
-                    if let datosDecodificados = try? decoder.decode(MovieDataResponse.self, from: data){
-                        print(datosDecodificados.request_token ?? "ERROR al decodificar TOKEN" )
-                        print(datosDecodificados.expires_at ?? "Error al decodificar los datos")
-                   
-                        ProfileInfo.shared.token = datosDecodificados.request_token
-                    
-                    }
+            if let data = try? Data(contentsOf: url){
+                let decoder = JSONDecoder()
+                
+                if let datosDecodificados = try? decoder.decode(MovieDataResponse.self, from: data){
+                    print(datosDecodificados.request_token ?? "ERROR al decodificar TOKEN" )
+                    print(datosDecodificados.expires_at ?? "Error al decodificar los datos")
+               
+                    self.movieDataToken?.request_token = datosDecodificados.request_token ?? "Error token"
+                    ProfileInfo.shared.token = datosDecodificados.request_token
+                
                 }
             }
         }

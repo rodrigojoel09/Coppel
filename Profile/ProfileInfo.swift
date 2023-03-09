@@ -18,7 +18,7 @@ class ProfileInfo {
     var profileInfo: LoginRequets?
     
     
-    ///Banderas para usar en toda la app
+
     var token: String?{
         get{
             let defaults = UserDefaults.standard
@@ -27,6 +27,17 @@ class ProfileInfo {
         set{
             let defaults = UserDefaults.standard
             defaults.set(newValue, forKey: "token")
+        }
+    }
+    
+    var session: String? {
+        get {
+            let defaults = UserDefaults.standard
+            return defaults.string(forKey: "session")
+        }
+        set {
+            let defaults = UserDefaults.standard
+            return defaults.set(newValue,forKey: "session")
         }
     }
     

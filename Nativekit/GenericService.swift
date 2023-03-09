@@ -9,6 +9,9 @@ import Foundation
 
 // Se usa final para que no se pueda heredar de la clase y no se puedan modificar los metodos
 final class GenericService {
+    
+    static  var notFound = ""
+    
     //MARK: - Methods
     func request<T>(headers: [String: String]?, httpMethod: HttpMethods = .post, timeout: Double = 15, url: String, completion: @escaping(_ result: Result<T, Error>) -> Void) where T: Decodable {
         print("URL REQUEST: \(url)")
